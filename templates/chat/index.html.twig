@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+{% block body %}
+{{ form_start(formChat) }}
+
+{{ form_row(formChat.pseudo, {'attr': {'placeholder': "titre de l'article"}
+}) }}
+
+{{ form_row(formChat.message, {'attr': {'placeholder': "Contenue de l'article"}
+}) }}
+
+ <input type="submit" value="Valider"/>
+{{ form_widget(formChat) }}
+
+
+{{ form_end(formChat) }}
+   <div id="minichat" class="center">
+
+            <h1>Bienvenue à vous sur le chat de mon site personnel</h1>
+{% for message in messages %}
+ 
+            
+        
+            <div id="messagechat" style="padding-left : 20px">
+        {{ message.pseudo}} dit : {{ message.message}} le {{ message.createdAt| date('H:i')}}
+            </div>
+    
+{% endfor %}
+</div>
+
+
+
+{% endblock %}
