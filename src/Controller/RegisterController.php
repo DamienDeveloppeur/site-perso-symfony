@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Member;
+use App\Entity\User;
 use App\Repository\RegisterRepository;
 
 
@@ -34,18 +35,18 @@ class RegisterController extends AbstractController
      */
     public function indexRegister(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
-        $newMember = new Member();
-        $form = $this->createForm(RegisterType::class, $newMember);
+        $newUser = new User();
+        $form = $this->createForm(RegisterType::class, $newUser);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
            
-          // $test = new App\Entity\Member();
-            $newMember->setCreatedAt(new \DateTime());
-            $newMember->setAvatar('logo.png');
-            $plainPassword = $newMember->getPass();
-             $hash = $encoder->encodePassword($newMember, $plainPassword);
+          // $test = new App\Entity\User();
+           // $newUser->setCreatedAt(new \DateTime());
+           // $newUser->setAvatar('logo.png');
+            $plainPassword = $newUser->getPassword();
+             $hash = $encoder->encodePassword($newUser, $plainPassword);
 
          /*   $newMember->setPass($this->passwordEncoder->encodePassword(
                             $newMember,
@@ -54,15 +55,15 @@ class RegisterController extends AbstractController
         */
 
 
-            $newMember->setpass($hash);
-            $manager->persist($newMember);
+            $newUser->setpassword($hash);
+            $manager->persist($newUser);
     
                 $manager->flush();
             return $this->redirectToRoute('login');
         }
 
         return $this->render('register/indexRegister.html.twig', [
-            'controller_name' => 'RegisterController',
+           
             'formRegister' => $form->createView(),
         ]);
     }

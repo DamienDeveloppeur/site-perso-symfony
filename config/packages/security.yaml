@@ -1,13 +1,13 @@
 security:
     encoders:
-        App\Entity\Member:
-            algorithm : auto
+        App\Entity\User:
+            algorithm : bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         users_in_memory: { memory: null }
         in_database:
             entity:
-                class: App\Entity\Member
+                class: App\Entity\User
                 property: email
 
 
@@ -24,9 +24,13 @@ security:
                 check_path: app_login
             guard:
                 authenticators:
-                    - App\Security\LoginAuthenticator
+                    - App\Security\UserAuthenticator
             logout:
                 path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+            
+           
                 # where to redirect after logout
                 # target: app_any_route
         
