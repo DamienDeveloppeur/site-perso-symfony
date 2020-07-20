@@ -1,13 +1,9 @@
+/*
+
 * {
     box-sizing: border-box;
 }
 
-
-/*
-html {
-    background-color: black;
-}
-*/
 
 .box {
     margin-top: 100px;
@@ -115,3 +111,5 @@ a span:nth-child(4) {
         bottom: 100%;
     }
 }
+
+*/

@@ -12,7 +12,7 @@ class NavigationController extends AbstractController
      */
     public function index()
     {
-        dump("ca marche");
+       
         return $this->render('navigation/index.html.twig', [
             'controller_name' => 'NavigationController',
             'title' => 'HEY'
@@ -24,7 +24,7 @@ class NavigationController extends AbstractController
      */
     public function indexOnepage()
     {
-        dump("ca marche");
+        
 
         return $this->render('navigation/index.html.twig', [
             'controller_name' => 'NavigationController',
