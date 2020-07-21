@@ -32,7 +32,7 @@ security:
                 check_path: app_login
             guard:
                 authenticators:
-                    - App\Security\LoginAuthenticator
+                    - App\Security\UserAuthenticator
             logout:
                 path: app_logout
                 # where to redirect after logout

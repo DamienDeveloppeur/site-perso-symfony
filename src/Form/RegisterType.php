@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Member;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,14 +17,14 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudo',TextType::class,[
+           /* ->add('pseudo',TextType::class,[
                 
                 'label' => 'pseudo',
                 'attr' => ['placeholder' => 'pseudo']
                 
-            ])
-            ->add('pass', PasswordType::class)
-            ->add('confirm_password', PasswordType::class)
+            ])*/
+            ->add('password', PasswordType::class)
+            //->add('confirm_password', PasswordType::class)
             ->add('email')
             
             

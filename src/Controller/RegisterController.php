@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Entity\Member;
+use App\Entity\User;
 use App\Repository\RegisterRepository;
 
 
@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-use App\Form\RegisterType;
+use App\Form\UserType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -34,28 +34,28 @@ class RegisterController extends AbstractController
      */
     public function indexRegister(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
-        $newMember = new Member();
-        $form = $this->createForm(RegisterType::class, $newMember);
+        $newUser = new User();
+        $form = $this->createForm(UserType::class, $newUser);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
            
-          // $test = new App\Entity\Member();
-            $newMember->setCreatedAt(new \DateTime());
-            $newMember->setAvatar('logo.png');
-            $plainPassword = $newMember->getPass();
-             $hash = $encoder->encodePassword($newMember, $plainPassword);
+          // $test = new App\Entity\User();
+           
+          
+            $plainPassword = $newUser->getPassword();
+             $hash = $encoder->encodePassword($newUser, $plainPassword);
 
-         /*   $newMember->setPass($this->passwordEncoder->encodePassword(
-                            $newMember,
-                $newMember->getPass()
+         /*   $newUser->setPass($this->passwordEncoder->encodePassword(
+                            $newUser,
+                $newUser->getPass()
                         ));
         */
 
 
-            $newMember->setpass($hash);
-            $manager->persist($newMember);
+            $newUser->setpassword($hash);
+            $manager->persist($newUser);
     
                 $manager->flush();
             return $this->redirectToRoute('login');
