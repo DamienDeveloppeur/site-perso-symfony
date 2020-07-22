@@ -21,12 +21,21 @@
             <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample09">
             <ul class="navbar-nav active">
             
+                    {% if app.user %}
+
             <li class="nav-item"><a class="nav-link" href="{{path('onePage')}}">Accueil </a></li>
-            <li class="nav-item"> <a class="nav-link" href="index.php?navigation=apropos" >Mon CV</a></li>
-    
-            <li class="nav-item"><a class="nav-link" href="{{ path('indexRegister') }}" >Inscription </a></li>
-          
             <li class="nav-item"><a class="nav-link" href="{{ path('chat') }}" >Chat </a>  </li>
+         
+           
+            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}" >Deconnexion </a>  </li>
+            {% else %}
+
+           
+        <li class="nav-item"><a class="nav-link" href="{{path('onePage')}}">Accueil </a></li>
+         <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}" >Connexion </a></li>
+           <li class="nav-item"><a class="nav-link" href="{{ path('indexRegister') }}" >Inscription </a></li>
+
+            {% endif %}
           
            
             
