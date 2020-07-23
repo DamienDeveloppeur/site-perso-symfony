@@ -12,7 +12,7 @@ class ChatMessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudo')
+            
             ->add('message')
             
         ;

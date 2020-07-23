@@ -41,7 +41,7 @@ class RegisterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()){
            
-          // $test = new App\Entity\User();
+      
            
           
             $plainPassword = $newUser->getPassword();
@@ -53,7 +53,8 @@ class RegisterController extends AbstractController
                         ));
         */
 
-
+            $newUser->setCreatedAt(new \DateTime());
+            $newUser->setAvatar("logo.png");
             $newUser->setpassword($hash);
             $manager->persist($newUser);
     
@@ -61,7 +62,7 @@ class RegisterController extends AbstractController
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('register/indexRegister.html.twig', [
+        return $this->render('security/login.html.twig', [
             'controller_name' => 'RegisterController',
             'formRegister' => $form->createView(),
         ]);
@@ -70,6 +71,6 @@ class RegisterController extends AbstractController
  * @Route("/connexion", name="login")
  */
     public function login(){
-        return $this->render('register/login.html.twig');
+        return $this->render('security/login.html.twig');
     }
 }

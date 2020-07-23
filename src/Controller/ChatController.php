@@ -22,15 +22,17 @@ class ChatController extends AbstractController
      */
     public function index(ChatRepository $test, Request $request, EntityManagerInterface $manager)
     {
+      $pseudal = $this->getuser();
+      $trouve =  $pseudal->getPseudo();
+       
+
         $chat = new Chat();
 
         $messages = $test->findAll();
 
         $form = $this->createFormBuilder($chat)
 
-        ->add('pseudo', textType::class, [
-            
-        ])
+    
         ->add('message', TextareaType::class, [
            
            
@@ -41,6 +43,7 @@ class ChatController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()){
            
+            $chat->setPseudo($trouve);
             $chat->setCreatedAt(new \DateTime());
            
             $manager->persist($chat);
