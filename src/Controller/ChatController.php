@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Chat;
+use App\Entity\User;
 use App\Repository\ChatRepository;
 
 
@@ -27,7 +28,7 @@ class ChatController extends AbstractController
       $trouveID =  $pseudal->getId();
 
         $chat = new Chat();
-
+        $newUser = new User();
         $messages = $test->findAll();
 
        // $messages = $this->$test->createQueryBuilder()
@@ -49,7 +50,7 @@ class ChatController extends AbstractController
            
             $chat->setPseudo($trouve);
             $chat->setCreatedAt(new \DateTime());
-            $chat->setUser($trouveID);
+            $chat->setUser($newUser);
             $manager->persist($chat);
     
                 $manager->flush();

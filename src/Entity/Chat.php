@@ -33,7 +33,7 @@ class Chat
     private $createdAT;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messagesChat")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="messagesChat", cascade={"persist"})
      */
     private $user;
 
