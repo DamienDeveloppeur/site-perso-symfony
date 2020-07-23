@@ -24,11 +24,15 @@ class ChatController extends AbstractController
     {
       $pseudal = $this->getuser();
       $trouve =  $pseudal->getPseudo();
-       
+      $trouveID =  $pseudal->getId();
 
         $chat = new Chat();
 
         $messages = $test->findAll();
+
+       // $messages = $this->$test->createQueryBuilder()
+                    //     ->
+
 
         $form = $this->createFormBuilder($chat)
 
@@ -45,7 +49,7 @@ class ChatController extends AbstractController
            
             $chat->setPseudo($trouve);
             $chat->setCreatedAt(new \DateTime());
-           
+            $chat->setUser($trouveID);
             $manager->persist($chat);
     
                 $manager->flush();

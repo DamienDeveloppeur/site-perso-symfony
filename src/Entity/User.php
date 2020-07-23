@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -61,6 +63,16 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="password", message="Alors ça troll ?")
      */
     public $confirm_password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Chat::class, mappedBy="user")
+     */
+    private $messagesChat;
+
+    public function __construct()
+    {
+        $this->messagesChat = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -172,6 +184,37 @@ class User implements UserInterface
     public function setAvatar(string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chat[]
+     */
+    public function getMessagesChat(): Collection
+    {
+        return $this->messagesChat;
+    }
+
+    public function addMessagesChat(Chat $messagesChat): self
+    {
+        if (!$this->messagesChat->contains($messagesChat)) {
+            $this->messagesChat[] = $messagesChat;
+            $messagesChat->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagesChat(Chat $messagesChat): self
+    {
+        if ($this->messagesChat->contains($messagesChat)) {
+            $this->messagesChat->removeElement($messagesChat);
+            // set the owning side to null (unless already changed)
+            if ($messagesChat->getUser() === $this) {
+                $messagesChat->setUser(null);
+            }
+        }
 
         return $this;
     }
