@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -61,6 +63,16 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="password", message="Alors ça troll ?")
      */
     public $confirm_password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Chat::class, mappedBy="user_id", cascade={"persist"})
+     */
+    private $chats;
+
+    public function __construct()
+    {
+        $this->chats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -172,6 +184,37 @@ class User implements UserInterface
     public function setAvatar(string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chat[]
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->contains($chat)) {
+            $this->chats->removeElement($chat);
+            // set the owning side to null (unless already changed)
+            if ($chat->getUserId() === $this) {
+                $chat->setUserId(null);
+            }
+        }
 
         return $this;
     }

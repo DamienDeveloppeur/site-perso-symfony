@@ -23,15 +23,25 @@
     <div id="minichat" class="center">
 
                 <h1>Bienvenue à vous sur le chat de mon site personnel</h1>
+
     {% for message in messages %}
     
                 
             
                 <div id="messagechat" style="padding-left : 20px">
-            {{ message.pseudo}} dit : {{ message.message}} le {{ message.createdAt| date('H:i')}}
+            {{ message.pseudo}} dit : {{ message.message}} le {{ message.createdAt| date('H:i')}} 
+           {{ message.userid.avatar}}
+           
                 </div>
     
     {% endfor %}
+
+
+       
+           
+                </div>
+    
+
         </div>
 
 

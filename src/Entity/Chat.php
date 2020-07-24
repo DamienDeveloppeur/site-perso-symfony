@@ -32,6 +32,12 @@ class Chat
      */
     private $createdAT;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="chats",cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +75,18 @@ class Chat
     public function setCreatedAT(\DateTimeInterface $createdAT): self
     {
         $this->createdAT = $createdAT;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): self
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Chat;
+use App\Entity\User;
 use App\Repository\ChatRepository;
 
 
@@ -24,10 +25,10 @@ class ChatController extends AbstractController
     {
       $pseudal = $this->getuser();
       $trouve =  $pseudal->getPseudo();
-       
+      $trouveID =  $pseudal->getId();
 
         $chat = new Chat();
-
+        $newUser = new User();
         $messages = $test->findAll();
 
         $form = $this->createFormBuilder($chat)
@@ -45,7 +46,7 @@ class ChatController extends AbstractController
            
             $chat->setPseudo($trouve);
             $chat->setCreatedAt(new \DateTime());
-           
+           $chat->setUserId( $pseudal);
             $manager->persist($chat);
     
                 $manager->flush();

@@ -37,7 +37,7 @@ class ProfilController extends AbstractController
     }
 
     /**
-     * @Route("/profil/{id}/edit", name="profil_change_avatar")
+     * @Route("/profil?{id}", name="profil_change_avatar")
      */
     public function changeAvatar(User $user, UserRepository $repo,  Request $request, EntityManagerInterface  $manager, $id)
     {
@@ -47,7 +47,7 @@ class ProfilController extends AbstractController
         // $id =  $_GET["id"];
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0)
         {
-            echo 'Envoi bien réussi ! <br>';
+          
             $error = 1;
             if ($_FILES['image']['size'] <= 3000000)
             {           
@@ -63,7 +63,7 @@ class ProfilController extends AbstractController
                         $adress1 = $id.'.'.$extensionImage;
                         move_uploaded_file($_FILES['image']['tmp_name'],
                         $adress);
-                            echo 'Envoi bien réussi ! <br>';
+                         
                         $error = 0;   
                        
                        /* $query= $manager->createQuery(
