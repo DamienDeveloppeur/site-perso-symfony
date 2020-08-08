@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ChatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ChatRepository::class)
@@ -36,7 +39,7 @@ class Chat
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="chats",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     public function getId(): ?int
     {
@@ -79,14 +82,14 @@ class Chat
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }

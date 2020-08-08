@@ -65,13 +65,19 @@ class User implements UserInterface
     public $confirm_password;
 
     /**
-     * @ORM\OneToMany(targetEntity=Chat::class, mappedBy="user_id", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Chat::class, mappedBy="user", cascade={"persist"})
      */
     private $chats;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostLike::class, mappedBy="user")
+     */
+    private $likes;
 
     public function __construct()
     {
         $this->chats = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -200,7 +206,7 @@ class User implements UserInterface
     {
         if (!$this->chats->contains($chat)) {
             $this->chats[] = $chat;
-            $chat->setUserId($this);
+            $chat->setUser($this);
         }
 
         return $this;
@@ -211,8 +217,39 @@ class User implements UserInterface
         if ($this->chats->contains($chat)) {
             $this->chats->removeElement($chat);
             // set the owning side to null (unless already changed)
-            if ($chat->getUserId() === $this) {
-                $chat->setUserId(null);
+            if ($chat->getUser() === $this) {
+                $chat->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PostLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(PostLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(PostLike $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
             }
         }
 

@@ -29,7 +29,7 @@ class RegisterController extends AbstractController
 
 
 
-      /**
+    /**
      * @Route("/register", name="indexRegister")
      */
     public function indexRegister(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
@@ -39,15 +39,15 @@ class RegisterController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
-           
-      
-           
-          
-            $plainPassword = $newUser->getPassword();
-             $hash = $encoder->encodePassword($newUser, $plainPassword);
+        if ($form->isSubmitted() && $form->isValid()) {
 
-         /*   $newUser->setPass($this->passwordEncoder->encodePassword(
+
+
+
+            $plainPassword = $newUser->getPassword();
+            $hash = $encoder->encodePassword($newUser, $plainPassword);
+
+            /*   $newUser->setPass($this->passwordEncoder->encodePassword(
                             $newUser,
                 $newUser->getPass()
                         ));
@@ -57,20 +57,21 @@ class RegisterController extends AbstractController
             $newUser->setAvatar("logo.png");
             $newUser->setpassword($hash);
             $manager->persist($newUser);
-    
-                $manager->flush();
-            return $this->redirectToRoute('login');
+
+            $manager->flush();
+            return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('security/login.html.twig', [
+        return $this->render('register/indexRegister.html.twig', [
             'controller_name' => 'RegisterController',
             'formRegister' => $form->createView(),
         ]);
     }
-/**
- * @Route("/connexion", name="login")
- */
-    public function login(){
+    /**
+     * @Route("/connexion", name="login")
+     */
+    public function login()
+    {
         return $this->render('security/login.html.twig');
     }
 }

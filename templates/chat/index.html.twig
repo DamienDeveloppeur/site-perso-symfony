@@ -12,38 +12,70 @@
 
     {{ form_start(formChat) }}
 
+
     {{ form_row(formChat.message, {'attr': {'placeholder': "Contenue de l'article"}
     }) }}
 
-    <input type="submit" value="Valider"/>
-  
+    <div id="messageChatLaunch"> 
+{{ form_widget(formChat.message) }}
+    </div>
 
+
+    <input type="submit" value="Valider" class="ajax" />
 
     {{ form_end(formChat) }}
+
+  
     <div id="minichat" class="center">
 
                 <h1>Bienvenue à vous sur le chat de mon site personnel</h1>
 
     {% for message in messages %}
     
-                
-            
                 <div id="messagechat" style="padding-left : 20px">
-            {{ message.pseudo}} dit : {{ message.message}} le {{ message.createdAt| date('H:i')}} 
-           {{ message.userid.avatar}}
+            {{ message.pseudo}} dit : {{ message.message }} le {{ message.createdAt| date('H:i')  }} 
+         <img src="avatar/{{message.user.avatar }}"> 
+                </div>
+    {% endfor %}
            
                 </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+ <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+let form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
     
-    {% endfor %}
+    
+
+     event.preventDefault();
+
+ const content = this.href;
+       
+        const messageChatLaunch = document.querySelector('#messageChatLaunch');
+const chatmess = response.data.chatmess;
+        axios.get(messageChatLaunch).then(function(response){
+            requeteAjax.send(data);
+         // redirection sur la même page
+         window.
+
+        })
+           
+          
+      
 
 
        
-           
-                </div>
-    
 
-        </div>
+  
+  }
 
+  
 
+});
 
+    </script>
 {% endblock %}

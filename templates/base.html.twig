@@ -9,6 +9,9 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
          <link rel="stylesheet" href="{{ asset('css/button.css') }}">
             <link rel="stylesheet" href="{{ asset('css/stylesonepage.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/fontawesome/all.css') }}">
+<link rel="stylesheet" href="{{ asset('css/fontawesome/fontawesome.min.css') }}">
+        
     
 
         {% endblock %}
@@ -26,7 +29,9 @@
             <li class="nav-item"><a class="nav-link" href="{{path('onePage')}}">Accueil </a></li>
             <li class="nav-item"><a class="nav-link" href="{{ path('chat') }}" >Chat </a>  </li>
           <li class="nav-item"><a class="nav-link" href="{{ path('profil', {'id' : app.user.id}) }}" >Profil</a>  </li>
+             <li class="nav-item"><a class="nav-link" href="{{ path('post', {'id' : app.user.id}) }}" >Post</a>  </li>
             <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}" >Deconnexion </a>  </li>
+
             {% else %}
 
            

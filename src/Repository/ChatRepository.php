@@ -19,10 +19,10 @@ class ChatRepository extends ServiceEntityRepository
         parent::__construct($registry, Chat::class);
     }
 
-    // /**
-    //  * @return Chat[] Returns an array of Chat objects
-    //  */
-    /*
+     /**
+      * @return Chat[] Returns an array of Chat objects
+      */
+    
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('c')
@@ -34,7 +34,7 @@ class ChatRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Chat
