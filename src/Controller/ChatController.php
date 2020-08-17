@@ -91,7 +91,7 @@ class ChatController extends AbstractController
         $chat->setMessage($_POST["form_message"]);
         $manager->flush();
 
-
+        // ok 
         $form = $this->createFormBuilder($chat)
 
             ->setAction($this->generateUrl('chat_post'))
