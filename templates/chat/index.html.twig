@@ -9,6 +9,7 @@
 {% block body %}
 
 
+<div id="chattest">
 
     {{ form_start(formChat) }}
 
@@ -24,11 +25,12 @@
     <input type="submit" value="Valider" class="ajax" />
 
     {{ form_end(formChat) }}
-
+</div>
   
     <div id="minichat" class="center">
 
                 <h1>Bienvenue à vous sur le chat de mon site personnel</h1>
+{{ramdom }} 
 
     {% for message in messages %}
     
@@ -37,7 +39,7 @@
          <img src="avatar/{{message.user.avatar }}"> 
                 </div>
     {% endfor %}
-           
+         
                 </div>
         </div>
 {% endblock %}
@@ -46,36 +48,32 @@
  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 
-let form = document.querySelector("form");
-form.addEventListener("submit", (event) => {
-    
-    
+
+  let form =   document.getElementById('chattest');
+        form.addEventListener('submit',onClickBtnLike );
+        
+   
+
+
+    function onClickBtnLike(event){
 
      event.preventDefault();
+const messageChatLaunch = document.querySelector('#form_message');
+console.log(messageChatLaunch);
+        const data = new FormData();
+        data.append('form_message', form_message.value);
 
- const content = this.href;
-       
-        const messageChatLaunch = document.querySelector('#messageChatLaunch');
-const chatmess = response.data.chatmess;
-        axios.get(messageChatLaunch).then(function(response){
-            requeteAjax.send(data);
-         // redirection sur la même page
-         window.
+         const requeteAjax = new XMLHttpRequest();
+        
+        requeteAjax.open('POST', '/chat/post', true);
 
-        })
-           
-          
-      
-
-
-       
 
   
+        requeteAjax.send(data);
   }
 
-  
 
-});
+  
 
     </script>
 {% endblock %}

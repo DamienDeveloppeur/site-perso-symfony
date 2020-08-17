@@ -16,17 +16,36 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+// API TOOLS
+use Symfony\Component\Serializer\SerializerInterface;
+
 class ChatController extends AbstractController
 {
 
     /**
      * @Route("/chat", name="chat")
      */
-    public function showMessage(ChatRepository $test, EntityManagerInterface $manager)
+    public function showMessage(ChatRepository $chatrepo, EntityManagerInterface $manager, SerializerInterface $serializer)
     {
-
-        $messages = $test->findAll();
+        $ramdom = rand(0, 50);
+        /* 
+        $chatJson = file_get_contents('api/chats');
+        $arrayChat = $serializer->decode($chatJson, 'json');
+        */
         $chat = new Chat();
+        //  $messages = $chatrepo->findAll();
+
+
+        $repository = $this->getDoctrine()->getRepository(Chat::class);
+
+        $messages = $repository->findByExampleField();
+
+
+
+
+        // $messages = $chatrepo->query();
+
+
         $form = $this->createFormBuilder($chat)
             ->setAction($this->generateUrl('chat_post'))
             ->add('message', TextareaType::class, [])
@@ -35,7 +54,8 @@ class ChatController extends AbstractController
         return $this->render('chat/index.html.twig', [
             'controller_name' => 'ChatController',
             'formChat' => $form->createView(),
-            'messages' => $messages
+            'messages' => $messages,
+            'ramdom' => $ramdom
 
         ]);
     }
@@ -47,13 +67,30 @@ class ChatController extends AbstractController
      */
     public function index(ChatRepository $test, Request $request, EntityManagerInterface $manager)
     {
+        dump($_POST["form_message"]);
+        $ramdom = rand(0, 50);
         $pseudal = $this->getuser();
         $trouve =  $pseudal->getPseudo();
         $trouveID =  $pseudal->getId();
 
         $chat = new Chat();
         $newUser = new User();
-         $messages = $test->findAll();
+        //  $messages = $test->findAll();
+
+
+        $repository = $this->getDoctrine()->getRepository(Chat::class);
+
+        $messages = $repository->findByExampleField();
+
+
+
+        $chat->setPseudo($trouve);
+        $chat->setCreatedAt(new \DateTime());
+        $chat->setUser($pseudal);
+        $manager->persist($chat);
+        $chat->setMessage($_POST["form_message"]);
+        $manager->flush();
+
 
         $form = $this->createFormBuilder($chat)
 
@@ -62,7 +99,7 @@ class ChatController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-
+        /*
         if ($form->isSubmitted() && $form->isValid()) {
 
             $chat->setPseudo($trouve);
@@ -71,28 +108,18 @@ class ChatController extends AbstractController
             $manager->persist($chat);
 
             $manager->flush();
-           /* return $this->json([
-                'code' => 200,
-                'message' => 'message bien eSnvoyé',
-                
-
-            ], 200);
-            */
-
-            return $this->render('chat/index.html.twig', [
-                'controller_name' => 'ChatController',
-                'messages' => $messages,
-                'formChat' => $form->createView(),
-    
-            ]);
-
+          
+        
+            return $this->redirectToRoute('chat');
         }
+
+*/
         return $this->render('chat/index.html.twig', [
             'controller_name' => 'ChatController',
             'messages' => $messages,
             'formChat' => $form->createView(),
+            'ramdom' => $ramdom
 
         ]);
-    
     }
 }

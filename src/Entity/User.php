@@ -10,6 +10,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// API
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(
@@ -17,6 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * message="l'email indiquée est déjà utilisé"
  * )
  * @UniqueEntity("pseudo")
+ * @ApiResource(
+ * collectionOperations={},
+ * itemOperations={"get"}
+ *              )
  */
 class User implements UserInterface
 {
@@ -30,6 +40,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email()\Unique
+     * @Groups({"read:full:comment"})
      */
     private $email;
 
@@ -46,6 +57,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"read:full:comment"})
      */
     private $pseudo;
 
@@ -254,5 +266,37 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function updateAvatar($donneForm, $id)
+    {
+
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+
+            $error = 1;
+            if ($_FILES['image']['size'] <= 3000000) {
+                $informationsImage = pathinfo($_FILES['image']['name']);
+
+                $extensionImage = $informationsImage['extension'];
+
+                $extensionsArray = array('png', 'gif', 'jpg', 'jpeg');
+
+                if (in_array($extensionImage, $extensionsArray)) {
+                    $adress = 'avatar/' . $id . '.' . $extensionImage;
+                    $adress1 = $id . '.' . $extensionImage;
+                    move_uploaded_file(
+                        $_FILES['image']['tmp_name'],
+                        $adress
+                    );
+                    return $adress1;
+                    $error = 0;
+                } else {
+                    echo 'MDR DE TURBO LOL L\'EXTENSION N\'EST PAS BONNE';
+                }
+            } else {
+                echo 'La taille est trop grande';
+            }
+        }
     }
 }

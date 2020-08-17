@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Chat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Chat|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,22 +20,31 @@ class ChatRepository extends ServiceEntityRepository
         parent::__construct($registry, Chat::class);
     }
 
-     /**
-      * @return Chat[] Returns an array of Chat objects
-      */
-    
-    public function findByExampleField($value)
+    /**
+     * @return Chat[] Returns an array of Chat objects
+     */
+
+    public function findByExampleField()
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            // ->andWhere('c.exampleField = :val')
+
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    
+
+    public function showMessageChat()
+    {
+        $entityManager = $this->getEntityManager();
+        $messagess = $entityManager->createQuery(
+            'SELECT pseudo FROM App\Entity\Chat
+        '
+        );
+
+        return $messagess->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Chat

@@ -17,22 +17,25 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 class ProfilController extends AbstractController
 {
     /**
      * @Route("/profil", name="profil")
      */
-    public function index( EntityManagerInterface $manager, UserRepository $repo)
+    public function index(EntityManagerInterface $manager, UserRepository $repo)
     {
-       $id =  $_GET["id"];
+        $id =  $_GET["id"];
         $dataProfil  = new User();
-            $dataProfil = $repo->find($id);
-      
+        $dataProfil = $repo->find($id);
+
 
         return $this->render('profil/index.html.twig', [
-            
+
             'dataProfil' => $dataProfil,
-           
+
         ]);
     }
 
@@ -43,67 +46,56 @@ class ProfilController extends AbstractController
     {
         $dataProfil  = new User();
         $dataProfil = $repo->find($id);
+        $adress1 = $dataProfil->updateAvatar($_FILES["image"], $id);
 
+        $user->setAvatar($adress1);
+
+
+        $manager->persist($user);
+
+        $manager->flush();
+
+        return $this->render('profil/index.html.twig', [
+            'dataProfil' => $dataProfil,
+
+        ]);
         // $id =  $_GET["id"];
-        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0)
-        {
-          
-            $error = 1;
-            if ($_FILES['image']['size'] <= 3000000)
-            {           
-                $informationsImage = pathinfo($_FILES['image']['name']);
-
-                $extensionImage = $informationsImage['extension'];
-
-                $extensionsArray = array('png', 'gif', 'jpg', 'jpeg');
-
-                    if(in_array($extensionImage, $extensionsArray))
-                    {
-                        $adress = 'avatar/' . $id .'.'.$extensionImage;
-                        $adress1 = $id.'.'.$extensionImage;
-                        move_uploaded_file($_FILES['image']['tmp_name'],
-                        $adress);
-                         
-                        $error = 0;   
-                       
-                       /* $query= $manager->createQuery(
-                            'UPDATE App\Entity\User
-                            SET avatar = :avatar
-                            WHERE id = :id
-                            '
-                        )->setParameter('avatar',  $adress1, 'id', $id);
-                        */
-                        $user->setAvatar($adress1);
-
-                        
-                        $manager->persist($user);
-    
-                        $manager->flush();
-
-                        return $this->render('profil/index.html.twig', [
-                            'dataProfil' => $dataProfil,
-                            
-                        ]);
-
-
-                    }
-                    else
-                    {
-                        echo 'MDR DE TURBO LOL L\'EXTENSION N\'EST PAS BONNE';
-                    }
-            }
-            else 
-            {
-                echo 'La taille est trop grande';
-            }
-        }
-    
-        
- 
-   
-     
-  
 
     }
 
+    /**
+     * @Route("/profils", name="profil_updatePass")
+     */
+    public function updatePass(UserRepository $repo, Request $request, EntityManagerInterface  $manager)
+    {
+
+        $id =  $_GET["id"];
+
+        $pseudal = $this->getuser();
+
+        $dataProfil  = new User();
+
+        $form = $this->createFormBuilder($dataProfil)
+
+            ->add('password')
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            dump("ça marche");
+            $dataProfil = $repo->find($id);
+            //$dataProfil->setPassword();
+
+            $manager->persist($pseudal);
+
+            $manager->flush();
+            return $this->render('navigation/index.html.twig', []);
+        }
+
+        return $this->render('profil/changePass.html.twig', [
+            'controller_name' => 'profilController',
+            'form' => $form->createView(),
+        ]);
+    }
 }
