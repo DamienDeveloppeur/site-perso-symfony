@@ -38,8 +38,9 @@
             {{ message.pseudo}} dit : {{ message.message }} le {{ message.createdAt| date('H:i')  }} 
          <img src="avatar/{{message.user.avatar }}"> 
                 </div>
+
     {% endfor %}
-         
+        
                 </div>
         </div>
 {% endblock %}
@@ -48,18 +49,41 @@
  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 
+      
 
   let form =   document.getElementById('chattest');
         form.addEventListener('submit',onClickBtnLike );
         
-   
+
+        function testtroll(){
+
+        }
+   getMessages();
+   function getMessages(){
+       console.log("ok");
+  const requeteAjax2 = new XMLHttpRequest();
+  requeteAjax2.open('GET', '/chatajax');
+
+        requeteAjax2.onload = function(){ 
+            //let test = requeteAjax2.responseText;
+            //console.log(test);
+           
+           const resultat = JSON.parse(requeteAjax2.responseText);
+
+             console.log(resultat); 
+      console.log(resultat.message);
+document.getElementById("minichat").innerHTML = resultat.message;
+             //console.log("test");
+        }
+       requeteAjax2.send();
+   }
+    
 
 
     function onClickBtnLike(event){
-
+      
      event.preventDefault();
 const messageChatLaunch = document.querySelector('#form_message');
-console.log(messageChatLaunch);
         const data = new FormData();
         data.append('form_message', form_message.value);
 
@@ -70,6 +94,8 @@ console.log(messageChatLaunch);
 
   
         requeteAjax.send(data);
+        
+        getMessages();
   }
 
 

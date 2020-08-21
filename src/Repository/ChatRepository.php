@@ -30,7 +30,7 @@ class ChatRepository extends ServiceEntityRepository
             // ->andWhere('c.exampleField = :val')
 
             ->orderBy('c.id', 'DESC')
-            ->setMaxResults(5)
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult();
     }

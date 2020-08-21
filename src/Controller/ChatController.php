@@ -38,10 +38,18 @@ class ChatController extends AbstractController
 
         $repository = $this->getDoctrine()->getRepository(Chat::class);
 
-        $messages = $repository->findByExampleField();
+        $message = $repository->findByExampleField();
 
-
-
+        // $test2 = json_encode($test);
+        // echo $test2;
+        $messages = $serializer->serialize($message, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+        //  $messages = json_encode($messages);
+        dump($messages);
+        // echo $messages;
 
         // $messages = $chatrepo->query();
 
@@ -60,6 +68,41 @@ class ChatController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/chatajax", name="chatajax")
+     */
+    public function showMessageAjax(ChatRepository $chatrepo, EntityManagerInterface $manager, SerializerInterface $serializer)
+    {
+
+        $chat = new Chat();
+
+
+        $repository = $this->getDoctrine()->getRepository(Chat::class);
+
+        $message = $repository->findByExampleField();
+
+
+
+        $messages = $serializer->serialize($message, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
+        // dump($messages);
+        // echo $messages;
+
+        return $this->json(
+            [
+                'code' => 200,
+                'message' => $messages,
+                //'likes' => $likeRepo->count(['post' => $post])
+            ],
+            200
+        );
+    }
+
+
 
 
     /**
@@ -67,7 +110,7 @@ class ChatController extends AbstractController
      */
     public function index(ChatRepository $test, Request $request, EntityManagerInterface $manager)
     {
-        dump($_POST["form_message"]);
+
         $ramdom = rand(0, 50);
         $pseudal = $this->getuser();
         $trouve =  $pseudal->getPseudo();
